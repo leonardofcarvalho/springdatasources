@@ -45,8 +45,4 @@ public class SampleController {
 	public Collection<br.com.datasources.repository.customer2.Customer> listAll2() {
 		return customer2Service.listAll2();
 	}
-
-	public static void main(String[] args) throws Exception {
-		SpringApplication.run(SampleController.class, args);
-	}
 }
