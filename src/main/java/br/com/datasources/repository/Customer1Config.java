@@ -7,6 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -26,7 +27,6 @@ public class Customer1Config {
 	@Autowired
 	private Environment env;
 
-	// @Primary
 	@Bean
 	public LocalContainerEntityManagerFactoryBean customer1EntityManagerFactory() throws NamingException {
 		final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -38,15 +38,13 @@ public class Customer1Config {
 		return em;
 	}
 
-	// @Primary
-	@Bean
 	public DataSource customer1DataSource() throws NamingException {
 		return (DataSource) new JndiTemplate().lookup(env.getProperty("spring.datasource.jndi-name1"));
 	}
 
-	// @Primary
 	@Bean
-	public PlatformTransactionManager customer1TransactionManager(final EntityManagerFactory emf) {
+	public PlatformTransactionManager customer1TransactionManager(
+			final @Qualifier("customer1EntityManagerFactory") EntityManagerFactory emf) {
 		final JpaTransactionManager transactionManager = new JpaTransactionManager();
 		transactionManager.setEntityManagerFactory(emf);
 		return transactionManager;
@@ -59,8 +57,6 @@ public class Customer1Config {
 
 	final Properties additionalProperties() {
 		final Properties hibernateProperties = new Properties();
-		// hibernateProperties.setProperty("hibernate.hbm2ddl.auto",
-		// env.getProperty("hibernate.hbm2ddl.auto"));
 		hibernateProperties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
 		hibernateProperties.setProperty("hibernate.cache.use_second_level_cache", "false");
 		hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "update");

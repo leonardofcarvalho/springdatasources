@@ -12,46 +12,38 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import br.com.datasources.repository.customer1.Customer;
-import br.com.datasources.repository.customer1.CustomerRepository;
-import br.com.datasources.repository.customer2.CustomerRepository2;
+import br.com.datasources.service.Customer1Service;
+import br.com.datasources.service.Customer2Service;
 
 @Controller
+@ResponseBody
 public class SampleController {
 
 	@Autowired
-	private CustomerRepository customerRepository;
-
+	private Customer1Service customer1Service;
 	@Autowired
-	private CustomerRepository2 customerRepository2;
+	private Customer2Service customer2Service;
 
-	@RequestMapping(value = "/addAll")
+	@RequestMapping(value = "/addAll", method = { RequestMethod.POST, RequestMethod.GET })
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void addAll() {
-		customerRepository.save(new Customer("Jack", "Bauer"));
-		customerRepository.save(new Customer("Chloe", "O'Brian"));
-		customerRepository.save(new Customer("Kim", "Bauer"));
-		customerRepository.save(new Customer("David", "Palmer"));
-		customerRepository.save(new Customer("Michelle", "Dessler"));
+		customer1Service.addAll();
 	}
 
-	@RequestMapping(value = "/listAll", method = RequestMethod.POST, produces = { "application/json" })
-	public @ResponseBody Collection<Customer> listAll() {
-		return customerRepository.findAll();
+	@RequestMapping(value = "/listAll", method = { RequestMethod.POST, RequestMethod.GET })
+	public Collection<Customer> listAll() {
+		return customer1Service.listAll();
 	}
 
 	@RequestMapping(value = "/addAll2")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void addAll2() {
-		customerRepository2.save(new br.com.datasources.repository.customer2.Customer("Jack2", "Bauer"));
-		customerRepository2.save(new br.com.datasources.repository.customer2.Customer("Chloe2", "O'Brian"));
-		customerRepository2.save(new br.com.datasources.repository.customer2.Customer("Kim2", "Bauer"));
-		customerRepository2.save(new br.com.datasources.repository.customer2.Customer("David2", "Palmer"));
-		customerRepository2.save(new br.com.datasources.repository.customer2.Customer("Michelle2", "Dessler"));
+		customer2Service.addAll();
 	}
 
-	@RequestMapping(value = "/listAll2", method = RequestMethod.POST, produces = { "application/json" })
-	public @ResponseBody Collection<br.com.datasources.repository.customer2.Customer> listAll2() {
-		return customerRepository2.findAll();
+	@RequestMapping(value = "/listAll2", method = { RequestMethod.POST, RequestMethod.GET })
+	public Collection<br.com.datasources.repository.customer2.Customer> listAll2() {
+		return customer2Service.listAll2();
 	}
 
 	public static void main(String[] args) throws Exception {

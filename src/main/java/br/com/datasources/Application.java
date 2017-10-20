@@ -12,15 +12,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 //@ComponentScan
 //@EnableAutoConfiguration
 //@EnableJpaRepositories
+//@ComponentScan(basePackages = { "br.gov.anatel.dici.api", "br.gov.anatel.dici.negocio.service" })
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class,
 		DataSourceTransactionManagerAutoConfiguration.class })
 @EnableTransactionManagement
 // @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
 
-	public static void main(String[] args) {
-		SpringApplication.run(applicationClass, args);
-	}
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
